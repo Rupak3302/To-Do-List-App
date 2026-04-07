@@ -70,12 +70,12 @@ todo-app/backend/
 
 ## API Endpoints
 # Method    Endpoint        Description
-- GET       /todos          Get all todos
-- GET       /todos          Search todos ( /todos?q=keywords )
-- POST      /todos          Create a new todo
-- GET       /todos/:id      Get - single todo
-- PUT       /todos/:id      Update a todo
-- DELETE    /todos/:id      Delete a todo
+- GET       api/todos          Get all todos
+- GET       api/todos          Search todos ( /todos?q=keywords )
+- POST      api/todos          Create a new todo
+- GET       api/todos/:id      Get - single todo
+- PUT       api/todos/:id      Update a todo
+- DELETE    api/todos/:id      Delete a todo
 
 
 ## Challenges Faced & Solutions
@@ -94,3 +94,5 @@ todo-app/backend/
 
 ## How to Setup & Run this...
 - npx create-react-app frontend
+- npm install axios (For connect to the backend API)
+- npm react-router-dom (For routing)

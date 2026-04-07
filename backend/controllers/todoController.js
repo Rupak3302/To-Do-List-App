@@ -19,19 +19,25 @@ exports.getTodos = async (req, res) => {
         }
 
         // Sort by newest first
-        const todos = await Todo.find(query).sort({ createdAt: -1 });
-        
+        const todos = await Todo.find({}).sort({ createdAt: -1 });
+
+        if (!todos) 
+            return res.status(400).json({
+                success: false,
+                error: 'No data found'
+            })
         res.status(200).json({
-            success: true,
-            msg: 'GET all todos successfully',
-            count: todos.length,
-            data: todos
+        success: true,
+        msg: 'GET all todos successfully',
+        count: todos.length,
+        data: todos
         });
 
-    } catch (err) {
+
+    } catch (error) {
         res.status(500).json({ 
             success: false,
-            msg: `No data found ${err.message}` 
+            error: `No data found ${error.message}` 
         });
     }
 };
@@ -40,7 +46,7 @@ exports.getTodos = async (req, res) => {
 exports.createTodo = async (req, res) => {
     const { title, description } = req.body;
 
-    // Add doc to database
+    // Add doc to db
     try {
         const todo = await Todo.create({ title, description });
         res.status(200).json({
@@ -49,10 +55,10 @@ exports.createTodo = async (req, res) => {
             data: todo
         });
         
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ 
             success: false,
-            msg: err.msg
+            error: error.message
         });
     }
     
@@ -78,10 +84,10 @@ exports.getTodo = async (req, res) => {
             data: todo
         });
 
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({
             success: false,
-            msg: err.msg
+            error: error.message
         });
     }
 };
@@ -113,14 +119,14 @@ exports.updateTodo = async (req, res) => {
         }
         res.json({
             success: true,
-            message: 'Todo updated successfully',
+            msg: 'Todo updated successfully',
             data: todo
         });
 
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ 
             success: false,
-            message: err.message 
+            error: error.message 
         });
     }
 };
@@ -145,10 +151,10 @@ exports.deleteTodo = async (req, res) => {
             data: todo
         });
 
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ 
             success: false,
-            msg: err.message 
+            error: error.message 
         });
     }
 };
