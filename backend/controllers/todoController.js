@@ -13,15 +13,15 @@ exports.getTodos = async (req, res) => {
                 $or: [
                     { title: { $regex: q, $options: 'i' } },
                     { description: { $regex: q, $options: 'i' } },
-                    { completed: q.toLowerCase() === 'true' ? true : q.toLowerCase() === 'false' ? false : undefined },
+                    { completed: q.toLowerCase() === 'completed' ? true : q.toLowerCase() === 'pending' ? false : undefined }
                 ]
             };
         }
 
         // Sort by newest first
-        const todos = await Todo.find({}).sort({ createdAt: -1 });
+        const todos = await Todo.find(query).sort({ createdAt: -1 });
 
-        if (!todos) 
+        if (todos.length === 0) 
             return res.status(400).json({
                 success: false,
                 error: 'No data found'
@@ -40,28 +40,6 @@ exports.getTodos = async (req, res) => {
             error: `No data found ${error.message}` 
         });
     }
-};
-
-// POST--- Create / Add a new todo
-exports.createTodo = async (req, res) => {
-    const { title, description } = req.body;
-
-    // Add doc to db
-    try {
-        const todo = await Todo.create({ title, description });
-        res.status(200).json({
-            success: true,
-            msg: 'A new todo created successfully',
-            data: todo
-        });
-        
-    } catch (error) {
-        res.status(500).json({ 
-            success: false,
-            error: error.message
-        });
-    }
-    
 };
 
 // GET--- Get a single todo by ID
@@ -86,6 +64,27 @@ exports.getTodo = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+};
+
+// POST--- Create / Add a new todo
+exports.createTodo = async (req, res) => {
+    const { title, description } = req.body;
+
+    // Add doc to db
+    try {
+        const todo = await Todo.create({ title, description });
+        res.status(201).json({
+            success: true,
+            msg: 'A new todo created successfully',
+            data: todo
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
             success: false,
             error: error.message
         });

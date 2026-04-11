@@ -30,16 +30,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/todos/', todoRoutes);
 
-
-// Error handling middleware
-// app.use((err, res, next) =>  {
-//   console.error(err);
-//   res.status(500).json({
-//     success: false,
-//     message: 'Something went wrong'
-//   });
-// });
-
 // Get the port from environment variables
 const PORT = process.env.PORT
 

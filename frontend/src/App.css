@@ -10,7 +10,7 @@ body {
   background-color: #0e0d0dea;
   font-family: "Open Sans", sans-serif;
 }
-
+/* ── HEADER ── */
 header {
   background-color: #fff
 }
@@ -22,6 +22,14 @@ header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+header .search-bar {
+  padding: 10px;
+  width: 40%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 }
 
 header a {
@@ -36,7 +44,7 @@ header a {
   padding: 20px;
 
 }
-
+/* ── HOME LAYOUT ── */
 .home {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -52,43 +60,76 @@ header a {
 }
 
 .todo-details h4 {
-  background-color: rgb(235, 181, 4);
+  
+  background-color: var(--primary);
   color: #333;
   font-size: 1.2rem;
   margin: 0 0 10px 0;
   padding: 10px;
+  padding-right: 40%;
   border-radius: 5px 5px 0 0;
 }
 
 .todo-details p {
   color: #e0e0e0;
   font-size: 1rem;
-  margin: 0 10px 10px 10px;
+  margin: 0 10px 0 10px;
   padding: 10px 0 10px 0;
 }
 
 .todo-details .date {
   font-size: 0.9rem;
-  color: rgb(235, 181, 4);
+  color: var(--primary);
 }
 
 .todo-details span {
-  position: absolute;
-  top: 6px;
-  right: 10px;
+  top: 8px;
   cursor: pointer;
-  padding: 5px;
   border-radius: 50%;
   background-color: #1f1f1f;
 }
 
-input {
+.todo-details .delete {
+  position: absolute;
+  padding: 4px;
+  right: 30px;
+}
+
+.todo-details .edit {
+  position: absolute;
+  padding: 4px;
+  right: 70px; 
+}
+
+.todo-details input {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  padding: 10px;
+  transform: scale(1.5);
+  accent-color: #1f1f1f;
+  cursor: pointer;
+}
+
+.todo-details .status {
+  display: block;
+  text-align: center;
+  padding-bottom: 10px;
+  color: #1fdb25;
+  background-color: transparent;
+  border-radius: 0;
+  font-weight: bold;
+  cursor: text;
+}
+
+form input {
   display: block;
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
   border-radius: 5px;
   box-sizing: border-box;
 }
@@ -111,45 +152,3 @@ div.error {
   padding: 10px;
 
 }
-
-
-
-
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
