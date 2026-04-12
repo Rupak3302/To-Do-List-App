@@ -19,9 +19,9 @@ function App() {
             let response;
 
             if (!value) {
-                response = await axios.get(`${process.env.REACT_APP_API_URL}/api/todos`);
+                response = await axios.get(`${process.env.REACT_APP_API_URL}api/todos`);
             } else {
-            response = await axios.get(`/api/todos?q=${value}`);
+            response = await axios.get(`${process.env.REACT_APP_API_URL}/api/todos?q=${value}`);
             }
 
             if (lastestSearch !== value) return;
