@@ -5,6 +5,10 @@
   --error: #ff4d4d;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: #0e0d0dea;
@@ -60,7 +64,6 @@ header a {
 }
 
 .todo-details h4 {
-  
   background-color: var(--primary);
   color: #333;
   font-size: 1.2rem;
@@ -80,6 +83,8 @@ header a {
 .todo-details .date {
   font-size: 0.9rem;
   color: var(--primary);
+  margin: 0 10px 0 10px;
+  padding: 10px 0 10px 0;
 }
 
 .todo-details span {
@@ -122,6 +127,8 @@ header a {
   cursor: text;
 }
 
+/* ── FORM ── */
+
 form input {
   display: block;
   padding: 10px;
@@ -132,6 +139,7 @@ form input {
   background-color: #f1f1f1;
   border-radius: 5px;
   box-sizing: border-box;
+  font-size: 0.95rem;
 }
 
 form button {
@@ -144,6 +152,10 @@ form button {
   cursor: pointer;
 }
 
+form button:hover {
+  opacity: 0.85;
+}
+
 div.error {
   color: var(--error);
   border: 1px solid var(--error);
@@ -152,3 +164,67 @@ div.error {
   padding: 10px;
 
 }
+
+/* ── RESPONSIVE — Mobile (max 600px) ── */
+@media (max-width: 600px) {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 16px;
+        gap: 8px;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
+    }
+
+    header .search-bar {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .pages {
+        padding: 12px;
+    }
+
+    .home {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    form button {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+
+    .todo-details {
+        padding: 14px;
+        margin: 10px auto;
+    }
+
+    .todo-details h4 {
+        font-size: 1rem;
+        padding-right: 25%;
+    }
+
+    .todo-details p {
+        font-size: 0.9rem;
+    }
+
+    .todo-details .date {
+        font-size: 0.8rem;
+    }
+
+    .todo-details .delete {
+        right: 20px;
+    }
+
+    .todo-details .edit {
+        right: 56px;
+    }
+
+    .todo-details input {
+        transform: scale(1.2);
+    }
+}
+
