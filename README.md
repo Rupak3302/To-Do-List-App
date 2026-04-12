@@ -18,7 +18,6 @@ It allowes user to Create, Read, Update, Delete (CRUD) tasks and search tasks.
 - Proper error handling
 - Asynchronous programming
 
-
 ## How to Setup & Run this...
 # Clone the Repository
 
@@ -48,7 +47,7 @@ cd todo-app/backend
 - And it is excluded via `.gitignore`
 
 # Run the server 
-- `npm run dev` --> (to start the server)
+- npm run dev --> (to start the server)
 
 - MongoDB Connected
 - Server is running on port **http://localhost:5000**
@@ -72,7 +71,6 @@ todo-app/
 ├── package.json           # Project metadata & dependencies
 └── server.js              # App entry point
 ```
-
 ## API Endpoints
 - Base URL: `http://localhost:5000/api/todos`
 
@@ -89,8 +87,7 @@ todo-app/
 ```js
 GET /api/todos?q=keyword
 ```
-- Searches across **title**, **description**, and **completed status** (`true` / `pending`).
-
+- Searches across **title**, **description**, and **completed status** (`completed` / `pending`).
 
 ## Todo Data Model
 
@@ -104,51 +101,66 @@ GET /api/todos?q=keyword
 }
 ```
 
-## Challenges Faced & Solutions
-
-1. MongoDB connection Issues
-- Solved by using .env file with dotenv and proper connection string fron MongoDB Atlas
-
 2. API not receiving JSON data
 - Fixed by using express.json() middleware
 
-## ⚠️ Challenges Faced & How I Addressed Them
+## Challenges Faced & How I Addressed Them
 
-### 1. 🔌 MongoDB Connection Failure on Startup
+### 1. MongoDB Connection Failure on Startup
 **Challenge:** If `MONGO_URI` was missing or incorrect, the server would crash without a meaningful error.
 
-**Solution:** Wrapped the Mongoose connection in an `async/await` function inside `db.js` with a `try/catch` block. On failure, `console.error()` logs the exact error message and `process.exit(1)` stops the server cleanly instead of leaving it in a broken state.
+**Solution:** Solved by using .env file with dotenv and proper connection string fron MongoDB Atlas and Wrapped the Mongoose connection in an `async/await` function inside `db.js` with a `try/catch` block. On failure, `console.error()` logs the exact error message and `process.exit(1)` stops the server cleanly instead of leaving it in a broken state.
 
 ---
 
-### 2. 🔍 Search Across Multiple Fields Including a Boolean
-**Challenge:** Implementing a single search query (`?q=`) that works on both text fields (`title`, `description`) and a boolean field (`completed`).
+### 2. Search Across Multiple Fields Including a Boolean
+**Challenge:** Implementing a single search query (`?q=`) that works on both text fields (`title`, `description`) and a boolean field (`completed or pending`).
 
 **Solution:** Used MongoDB's `$or` operator combined with `$regex` for text fields. For the `completed` field, I mapped the string `"true"` to `true` and `"pending"` to `false` using a conditional expression, then built the query object dynamically before passing it to `Todo.find()`.
 
 ---
 
-### 3. 🆔 Invalid MongoDB ObjectId Crashing the Server
+### 3. Invalid MongoDB ObjectId Crashing the Server
 **Challenge:** Passing a malformed or invalid ID to `findById()` caused an unhandled exception and returned a `500` error instead of a clean `404`.
 
 **Solution:** Added `mongoose.Types.ObjectId.isValid(id)` validation before every database operation that uses an ID. If the ID is invalid, the API immediately returns a `404` response with a descriptive error message.
 
 ---
 
-### 4. 🌐 CORS Errors Between Frontend and Backend
+### 4. CORS Errors Between Frontend and Backend
 **Challenge:** The React frontend (running on port `3000`) was blocked by the browser when trying to call the Express backend (port `5000`) due to CORS policy.
 
 **Solution:** Installed and applied the `cors` npm package as middleware in `server.js` using `app.use(cors())`, which allows cross-origin requests from the React development server.
 
 ---
 
-### 5. 🧩 Keeping Code Modular and Maintainable
+### 5. Keeping Code Modular and Maintainable
 **Challenge:** Avoiding a single large file with all logic mixed together, which becomes hard to read and maintain.
 
 **Solution:** Followed the **MVC-style pattern** by separating concerns into four distinct layers — `models/` for the schema, `controllers/` for business logic, `routes/` for route definitions, and `config/` for database connection — keeping each file focused and easy to navigate.
 
 
-## To-Do List App - Frontend (using React.js)
+# To-Do List App - Frontend (using React.js)
+
+A **React.js** frontend for a To-Do List application, fully integrated with a Node.js/Express REST API backend. Supports complete CRUD operations, real-time search, task completion toggling, inline editing, loading indicators, error messages, and a fully responsive UI.
+
+---
+
+## Technologies Used:
+- React.js (Create React App)
+- Axios (for all API calls)
+- Context API + useReducer (state management)
+- React Router DOM
+
+## Features
+- Add new task
+- Edit task (title + description)
+- Mark task as completed (checkbox + "Completed" badge)
+- Delete task
+- Live search by title or description or (completed / pending)
+- Real-time UI updates
+- Responsive design
+- Proper error handling
 
 ## How to Setup & Run this...
 
@@ -192,21 +204,21 @@ frontend/
 
 ## Challenges Faced & How I Addressed Them
 
-### 1. 🔗 API URL Breaking After Deployment
-**Challenge:** Locally, the `"proxy"` field in `package.json` forwarded `/api/todos` requests to the backend automatically. After deploying to Netlify, the proxy no longer worked — all API calls pointed to the Netlify domain instead of the Render backend, breaking the entire app.
+### 1. API URL Breaking After Deployment
+**Challenge:** Locally, the `"proxy"` field in `package.json` forwarded `"The backend deploy link"` requests to the backend automatically. After deploying to Netlify, the proxy no longer worked — all API calls pointed to the Netlify domain instead of the Render backend, breaking the entire app.
 
 **Solution:** Added a `REACT_APP_API_URL` environment variable in the Netlify dashboard pointing to the Render backend URL, and updated all axios calls to use this variable in production builds.
 
 ---
 
-### 2. 🔄 Stale Search Results from Race Conditions
+### 2. Stale Search Results from Race Conditions
 **Challenge:** When a user typed quickly in the search bar, multiple API requests fired at the same time. Older responses sometimes arrived after newer ones, causing the wrong list of todos to be displayed on screen.
 
 **Solution:** Implemented a `lastestSearch` variable in `App.js` that stores the most recent input value. Before dispatching results to state, the function checks if the response belongs to the latest search and returns early if not, discarding stale results automatically.
 
 ---
 
-### 3. 🔁 Keeping UI in Sync After Every CRUD Operation
+### 3. Keeping UI in Sync After Every CRUD Operation
 **Challenge:** After creating, updating, or deleting a todo, the UI needed to reflect changes instantly without re-fetching all data from the server again.
 
 **Solution:** Every axios call dispatches the corresponding Context reducer action (`ADD_TODO`, `UPDATE_TODO`, `DELETE_TODO`) using the data returned directly from the server response. This keeps global state perfectly in sync with the database without any extra API calls.
@@ -216,21 +228,19 @@ frontend/
 ### 4. ⏳ No Visual Feedback During API Calls
 **Challenge:** When an API call was in progress, there was no feedback to the user — buttons could be clicked multiple times, causing duplicate requests or confusing behaviour.
 
-**Solution:** Added `isLoading` and `isUpdating` state variables to every component. While a request is pending, buttons are disabled, inputs are greyed out, and loading text ("Adding...", "Saving...") replaces the normal button label. A `finally` block always resets the loading state whether the request succeeds or fails.
+**Solution:** Added `isLoading` and `isUpdating` state variables to every Adding task component. While a request is pending, buttons are disabled, inputs are greyed out, and loading text ("Adding...") replaces the normal button label. A `finally` block always resets the loading state whether the request succeeds or fails.
 
 ---
 
-### 5. 📱 Responsive Layout Breaking on Mobile
+### 5. Responsive Layout Breaking on Mobile
 **Challenge:** The original CSS used a fixed `grid-template-columns: 2fr 1fr` layout and a fixed `300px` search bar width. On tablet and mobile screens, the layout overflowed and became unusable.
 
-**Solution:** Added three responsive `@media` breakpoints in `App.css`:
-- **≤ 900px (tablet):** Grid switches to single column, search bar shrinks to `220px`
+**Solution:** Added responsive `@media` breakpoints in `App.css`:
 - **≤ 600px (mobile):** Header stacks vertically, search bar becomes full width, font sizes and paddings reduced
-- **≤ 400px (small mobile):** Further font size reductions for very small screens
 
 ---
 
-### 6. 🧩 Managing Global State Without a Third-Party Library
+### 6. Managing Global State Without a Third-Party Library
 **Challenge:** Passing todos and dispatch functions down through multiple component layers via props made the code messy and hard to maintain.
 
 **Solution:** Used React's built-in **Context API** combined with **`useReducer`** for global state management. A custom `useTodosContext` hook wraps `useContext` and throws a descriptive error if used outside the Provider, making any misuse immediately obvious during development.
