@@ -18,7 +18,7 @@ const TodoFrom = () => {
 
         const todo = { title, description }
         try {
-            const response = await axios.post('/api/todos', todo);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/todos`, todo);
 
             if (response.status === 200 || response.status === 201) {
                 setError(null);

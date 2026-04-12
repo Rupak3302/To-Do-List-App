@@ -13,7 +13,7 @@ const Home = () => {
     useEffect(() =>  {
         const fetchTodos = async () => {
             try {
-            const response = await axios.get('/api/todos');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/todos`);
 
             if (response.status === 200) {
                 dispatch({type: 'SET_TODOS', payload: response.data.data})

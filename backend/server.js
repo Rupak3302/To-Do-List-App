@@ -13,7 +13,9 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(express.json());
 // Allow requests from other origins (like our React frontend)
-app.use(cors());
+app.use(cors({
+    origin: 'https://task-todoapps.netlify.app'
+}));
 
 
 // middleware 

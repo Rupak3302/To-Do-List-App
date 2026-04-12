@@ -12,7 +12,7 @@ const TodoDtails = ({ todo }) => {
   // Updating status (Toggle complete using Checkbox)
   const handleToggleComplete = async () => {
     try {
-      const response = await axios.put(`/api/todos/${todo._id}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/todos/${todo._id}`, {
         completed: !todo.completed,
       });
       if (response.status === 200) {
@@ -32,7 +32,7 @@ const TodoDtails = ({ todo }) => {
     const newDescription = prompt("Edit description:", todo.description);
 
     try {
-      const response = await axios.put(`/api/todos/${todo._id}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/todos/${todo._id}`, {
           title: newTitle,
           description: newDescription
       });
@@ -53,7 +53,7 @@ const TodoDtails = ({ todo }) => {
       return;
 
     try {
-      const response = await axios.delete(`/api/todos/${todo._id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/todos/${todo._id}`);
 
       if (response.status === 200) {
         dispatch({ type: "DELETE_TODO", payload: response.data.data });
