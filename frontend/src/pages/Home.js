@@ -28,6 +28,7 @@ const Home = () => {
 
     return (
         <div className='home'>
+            <TodoFrom />
             <div className="todos">
                 {
                     todos && todos.map((todo) => (
@@ -38,7 +39,6 @@ const Home = () => {
                     ))
                 }
             </div>
-            <TodoFrom />
         </div>
     )
 }
