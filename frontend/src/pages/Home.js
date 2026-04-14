@@ -30,6 +30,7 @@ const Home = () => {
         <div className='home'>
             <TodoFrom />
             <div className="todos">
+                <h3> My Task </h3>
                 {
                     todos && todos.map((todo) => (
                         <TodoDtails 

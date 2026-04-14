@@ -193,12 +193,11 @@ div.error {
     }
 
     form button {
-        font-size: 0.95rem;
-        padding: 10px;
+        font-size: 0.8rem;
+        padding: 8px;
     }
 
     .todo-details {
-        padding: 14px;
         margin: 10px auto;
     }
 
@@ -216,15 +215,21 @@ div.error {
     }
 
     .todo-details .delete {
-        right: 20px;
+        right: 44px;
+        top: 20px;
+        padding: 2px;
     }
 
     .todo-details .edit {
-        right: 56px;
+        right: 76px;
+        top: 20px;
+        padding: 2px;
     }
 
     .todo-details input {
-        transform: scale(1.2);
+        transform: scale(1.7);
+        top: 24px;
+        right: 18px;
     }
 }
 
