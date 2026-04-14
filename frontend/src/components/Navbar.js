@@ -13,9 +13,9 @@ const Navbar = ({onSearch}) => {
       
       dispatch({type: 'SET_SEARCH', payload: value});
       
-      setTimeout(() => {
-        onSearch(value);
-      }, 300);
+      // setTimeout(() => {
+      //   onSearch(value);
+      // }, 300);
     }
 
   return (

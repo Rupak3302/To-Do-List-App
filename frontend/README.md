@@ -32,6 +32,10 @@ A **React.js** frontend for a To-Do List application, fully integrated with a No
 
 > Frontend runs at: **http://localhost:3000**
 
+## Frontend deploy link
+
+> Netlify - **https://task-todoapps.netlify.app/**
+
 
 ### Frontend Folder Structure
 

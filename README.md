@@ -52,6 +52,10 @@ cd todo-app/backend
 - MongoDB Connected
 - Server is running on port **http://localhost:5000**
 
+## Backend Deploy Link
+
+- Render **https://to-do-list-backend-ko3y.onrender.com**
+
 
 ## Backend Folder Structure
 
@@ -173,6 +177,11 @@ A **React.js** frontend for a To-Do List application, fully integrated with a No
 - `npm start`
 
 > Frontend runs at: **http://localhost:3000**
+
+## Frontend deploy link
+
+> Netlify - **https://task-todoapps.netlify.app/**
+
 
 
 ### Frontend Folder Structure
