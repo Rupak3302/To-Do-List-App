@@ -45,6 +45,7 @@ const TodoFrom = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder='Title...'
+            disabled={isLoading}
         />
         <input
             className='from'
@@ -52,6 +53,7 @@ const TodoFrom = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder='Description...'
+            disabled={isLoading}
         />
 
         <button 
