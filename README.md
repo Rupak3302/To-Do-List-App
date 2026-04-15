@@ -1,255 +1,132 @@
-# To-Do List App - Backend (using Node.js, Express.js, MongoDB)
-
-## Project Overview
-This is RESTful **backend** API for a simple To-Do List application.
-It allowes user to Create, Read, Update, Delete (CRUD) tasks and search tasks.
-
-
-## Technologies Used:
-- Node.js (Javascript runtime)
-- Express.js (Backend framework)
-- MongoDB (Atlas - Cloud Database)
-- Mongoose (for database modeling)
-- dotenv (Enviornment variables)
-
-## Features
-- Create, Read, Update, Delete (CRUD) tasks
-- Search tasks by title or description
-- Proper error handling
-- Asynchronous programming
+Implementing To-Do List APIs with Node.js, Express.js, and MongoDB and Integrating To-Do List APIs with React Frontend (Part 1 and Part 2 Assignment)
+> Deployement Links 
 
-## How to Setup & Run this...
-# Clone the Repository
+GitHub Links
+https://github.com/Rupak3302/To-Do-List-App.git
 
-```bash
-git clone https://github.com/Rupak3302/To-Do-List-App.git
-cd todo-app/backend
-```
+Backend Links (Render)
+https://to-do-list-backend-ko3y.onrender.com
 
-# Install All packages & with commands
+Frontend Links(Netlify)
+https://task-todoapps.netlify.app/
 
-- `npm install / npm i` (& To restore the node_modules and package-lock.json)
+> Overview of Decisions Made During the Enhancement Process
 
-- `npm i express`
-- `npm i nodemon` -- (save-dev)
-- `npm i dotenv` -- (Enviornment variables)
-- `npm i mongoose` -- (Database)
-- `npm install mondodb`
-- `npm i cors` -- (Allow requests from other origins (like our React frontend))
+1. Project Structure Decision
 
+Decision: Kept the entire project — backend and frontend — in a single GitHub repository with two separate folders (`backend/` and `frontend/`), rather than splitting into two separate repos.
 
-# Create .env file
-- Create `.env` file in the root folder and add:
+Reason: The assignment referred to a single "Github Repo" for submission. A monorepo structure keeps the full-stack project organized, easier to manage, and simpler to submit as one GitHub link.
 
-- MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?appName=To-Do-App
-- PORT=5000
+2. Backend Architecture Decision
 
-- And it is excluded via `.gitignore`
+Decision: Followed an MVC-style pattern by separating the backend into four distinct layers — `models/`, `controllers/`, `routes/`, and `config/` — instead of writing everything in a single `server.js` file.
 
-# Run the server 
-- npm run dev --> (to start the server)
+Reason: This makes the code modular, readable, and maintainable. Each file has a single responsibility — the model defines the schema, the controller handles logic, the routes define endpoints, and the config manages database connection.
 
-- MongoDB Connected
-- Server is running on port **http://localhost:5000**
+3. Database Decision
 
-## Backend Deploy Link
+Decision: Used MongoDB Atlas (cloud-hosted) instead of a local MongoDB instance, and connected via `mongoose` with the URI stored in a `.env` file.
 
-- Render **https://to-do-list-backend-ko3y.onrender.com**
+Reason: Atlas works seamlessly with cloud deployments like Render without any extra configuration. Storing the URI in `.env` keeps credentials secure and out of the GitHub repository.
 
+4. State Management Decision
 
-## Backend Folder Structure
+Decision: Used React's built-in Context API + useReducer for global state management instead of a third-party library like Redux.
 
-```
-todo-app/
-├── backend/
-├── config/
-│   └── db.js              # MongoDB connection logic
-├── controllers/
-│   └── todoController.js  # All API logic (CRUD + search)
-├── models/
-│   └── todoModle.js       # Mongoose schema & model
-├── routes/
-│   └── todoRoutes.js      # Express route definitions
-├── .env                   # Environment variables (not committed)
-├── .gitignore             # Ignores node_modules, .env, package-lock.json
-├── package.json           # Project metadata & dependencies
-└── server.js              # App entry point
-```
-## API Endpoints
-- Base URL: `http://localhost:5000/api/todos`
+Reason: For an app of this scale, Context API with useReducer provides clean, predictable state management without the overhead of additional dependencies. The reducer handles four clear actions — `SET_TODOS`, `ADD_TODO`, `UPDATE_TODO`, `DELETE_TODO` — keeping state transitions easy to trace and debug.
 
-# Method    Endpoint           Description
-- GET       api/todos          Get all todos
-- GET       api/todos          Search todos ( /todos?q=keywords )
-- POST      api/todos          Create a new todo
-- GET       api/todos/:id      Get - single todo
-- PUT       api/todos/:id      Update a todo (title, description, completed)
-- DELETE    api/todos/:id      Delete a todo
+5. HTTP Requests Decision
 
-### Search Example
+Decision: Replaced all native `fetch()` calls with axios for every API request across all components (`Home.js`, `TodoDetails.js`, `TodoForm.js`, `App.js`).
 
-```js
-GET /api/todos?q=keyword
-```
-- Searches across **title**, **description**, and **completed status** (`completed` / `pending`).
+Reason: Axios automatically handles `Content-Type: application/json` headers, JSON response parsing, and throws errors on non-2xx responses — removing repetitive boilerplate code. This also made the codebase consistent since axios was already being used in `App.js` for search.
 
-## Todo Data Model
+6. UI Dynamic Update Decision
 
-```js
-{
-  title:       String,   // Required, max 100 characters
-  description: String,   // Optional, max 300 characters
-  completed:   Boolean,  // Default: false
-  createdAt:   Date,     // Auto-generated
-  updatedAt:   Date      // Auto-generated
-}
-```
+Decision: After every API call (create, update, delete), the corresponding Context reducer action is dispatched immediately using the data returned from the server response, instead of re-fetching all todos from the backend.
 
-2. API not receiving JSON data
-- Fixed by using express.json() middleware
+Reason: This keeps the UI in sync with the database instantly without any extra network requests. The user sees changes reflected immediately, making the app feel fast and responsive.
 
-## Challenges Faced & How I Addressed Them
+7. Loading & Error State Decision
 
-### 1. MongoDB Connection Failure on Startup
-**Challenge:** If `MONGO_URI` was missing or incorrect, the server would crash without a meaningful error.
+Decision: Added `isLoading`, state variables only            and `error` state variables to **every component** that makes API calls, with `finally` blocks to always reset loading state.
 
-**Solution:** Solved by using .env file with dotenv and proper connection string fron MongoDB Atlas and Wrapped the Mongoose connection in an `async/await` function inside `db.js` with a `try/catch` block. On failure, `console.error()` logs the exact error message and `process.exit(1)` stops the server cleanly instead of leaving it in a broken state.
+Reason: Without loading indicators, users had no feedback during API calls — they could click buttons multiple times causing duplicate requests. Proper error messages replace silent failures with clear user-facing feedback. The `finally` block ensures the UI never gets stuck in a loading state even if the request fails.
 
----
 
-### 2. Search Across Multiple Fields Including a Boolean
-**Challenge:** Implementing a single search query (`?q=`) that works on both text fields (`title`, `description`) and a boolean field (`completed or pending`).
+8. Responsive Design Decision
 
-**Solution:** Used MongoDB's `$or` operator combined with `$regex` for text fields. For the `completed` field, I mapped the string `"true"` to `true` and `"pending"` to `false` using a conditional expression, then built the query object dynamically before passing it to `Todo.find()`.
+Decision: Added One media query breakpoints to `App.css` ( ≤600px for mobile view) to make the layout fully responsive, replacing the fixed `grid-template-columns: 2fr 1fr` desktop-only layout.
 
----
+Reason: The original CSS had no responsive design — the layout broke completely on mobile. The assignment required a "responsive and user-friendly interface", so media queries were added to stack the grid to a single column on smaller screens and adjust font sizes, paddings, and header layout for mobile users.
 
-### 3. Invalid MongoDB ObjectId Crashing the Server
-**Challenge:** Passing a malformed or invalid ID to `findById()` caused an unhandled exception and returned a `500` error instead of a clean `404`.
+9. Search Debounce Decision
 
-**Solution:** Added `mongoose.Types.ObjectId.isValid(id)` validation before every database operation that uses an ID. If the ID is invalid, the API immediately returns a `404` response with a descriptive error message.
+Decision: Implemented a 300ms debounce on the search input in `Navbar.js` using `setTimeout`, and added a `lastestSearch` race condition guard in `App.js`.
 
----
+Reason: Without debouncing, an API call fired on every single keystroke — causing unnecessary load on the backend and potential UI flickering. The race condition guard discards stale responses that arrive out of order when the user types quickly.
 
-### 4. CORS Errors Between Frontend and Backend
-**Challenge:** The React frontend (running on port `3000`) was blocked by the browser when trying to call the Express backend (port `5000`) due to CORS policy.
+10. CORS Decision
 
-**Solution:** Installed and applied the `cors` npm package as middleware in `server.js` using `app.use(cors())`, which allows cross-origin requests from the React development server.
+Decision: Configured the backend CORS policy to use a whitelist function that allows `localhost:3000` for development and all `*.netlify.app` subdomains for production, instead of `app.use(cors())` which allows all origins.
 
----
+Reason: Allowing all origins (`cors()` with no config) is a security risk in production. The whitelist approach ensures only the known frontend origins can access the backend API, while still supporting both local development and all Netlify preview deploy URLs.
 
-### 5. Keeping Code Modular and Maintainable
-**Challenge:** Avoiding a single large file with all logic mixed together, which becomes hard to read and maintain.
+11. Environment Variables Decision
 
-**Solution:** Followed the **MVC-style pattern** by separating concerns into four distinct layers — `models/` for the schema, `controllers/` for business logic, `routes/` for route definitions, and `config/` for database connection — keeping each file focused and easy to navigate.
+Decision: Use `REACT_APP_API_URL` environment variable for all frontend API calls, with the value set differently per environment — `http://localhost:5000` locally and the Render URL on Netlify's dashboard.
 
+Reason: Hardcoding the backend URL would break either local development or production deployment. The environment variable approach means the same codebase works in both environments without any code changes — just a different `.env` value.
 
-# To-Do List App - Frontend (using React.js)
+12. Deployment Platform Decision
 
-A **React.js** frontend for a To-Do List application, fully integrated with a Node.js/Express REST API backend. Supports complete CRUD operations, real-time search, task completion toggling, inline editing, loading indicators, error messages, and a fully responsive UI.
+Decision: Deployed the backend on Render and the frontend on Netlify
 
----
+Reason: Both platforms offer free tiers suitable for assignment submission. Render handles Node.js backends natively with automatic GitHub deployments. Netlify is optimized for static React apps with instant delivery.
 
-## Technologies Used:
-- React.js (Create React App)
-- Axios (for all API calls)
-- Context API + useReducer (state management)
-- React Router DOM
+> Assignment Output ScreenShot 
+Frontend
 
-## Features
-- Add new task
-- Edit task (title + description)
-- Mark task as completed (checkbox + "Completed" badge)
-- Delete task
-- Live search by title or description or (completed / pending)
-- Real-time UI updates
-- Responsive design
-- Proper error handling
 
-## How to Setup & Run this...
+Backend (Postman)
 
-- `npx create-react-app frontend`
-- `npm install axios` --- (For connect to the backend API)
-- `npm react-router-dom` --- (For routing)
-- `npm install date-fns` --- (For date formating)
+Get All Todos
 
-### Run the server
-- `npm start`
 
-> Frontend runs at: **http://localhost:3000**
 
-## Frontend deploy link
+Create Todo / Add Todo
 
-> Netlify - **https://task-todoapps.netlify.app/**
 
 
+Search a todo 
 
-### Frontend Folder Structure
 
-```
-frontend/
-├── public/
-│   ├── index.html             # HTML template + Google Fonts + Material Icons
-│   └── manifest.json
-└── src/
-    ├── components/
-    │   ├── Navbar.js          # Header + debounced search bar
-    │   ├── TodoDetails.js     # Todo card (toggle, edit, delete + error)
-    │   └── TodoForm.js        # Add new task form (loading/error states)
-    ├── context/
-    │   └── TodoContext.js     # Global state — Context API + useReducer
-    ├── hooks/
-    │   └── useTodosContext.js # Custom hook for consuming context
-    ├── pages/
-    │   └── Home.js            # Main page — fetches todos, loading/error/empty states
-    ├── App.js                 # BrowserRouter + search handler
-    ├── App.css                # All styles + fully responsive media queries
-    ├── index.js               # React root + TodoContextProvider wrapper
-    ├── .gitignore             
-    ├── package.json           # Project metadata & dependencies
-    └── index.js               # React root + TodoContextProvider wrapper
 
-```
 
-## Challenges Faced & How I Addressed Them
+Get Single todo by ID
 
-### 1. API URL Breaking After Deployment
-**Challenge:** Locally, the `"proxy"` field in `package.json` forwarded `"The backend deploy link"` requests to the backend automatically. After deploying to Netlify, the proxy no longer worked — all API calls pointed to the Netlify domain instead of the Render backend, breaking the entire app.
 
-**Solution:** Added a `REACT_APP_API_URL` environment variable in the Netlify dashboard pointing to the Render backend URL, and updated all axios calls to use this variable in production builds.
 
----
 
-### 2. Stale Search Results from Race Conditions
-**Challenge:** When a user typed quickly in the search bar, multiple API requests fired at the same time. Older responses sometimes arrived after newer ones, causing the wrong list of todos to be displayed on screen.
 
-**Solution:** Implemented a `lastestSearch` variable in `App.js` that stores the most recent input value. Before dispatching results to state, the function checks if the response belongs to the latest search and returns early if not, discarding stale results automatically.
 
----
 
-### 3. Keeping UI in Sync After Every CRUD Operation
-**Challenge:** After creating, updating, or deleting a todo, the UI needed to reflect changes instantly without re-fetching all data from the server again.
 
-**Solution:** Every axios call dispatches the corresponding Context reducer action (`ADD_TODO`, `UPDATE_TODO`, `DELETE_TODO`) using the data returned directly from the server response. This keeps global state perfectly in sync with the database without any extra API calls.
+Edit / Update todo by ID
 
----
 
-### 4. ⏳ No Visual Feedback During API Calls
-**Challenge:** When an API call was in progress, there was no feedback to the user — buttons could be clicked multiple times, causing duplicate requests or confusing behaviour.
 
-**Solution:** Added `isLoading` and `isUpdating` state variables to every Adding task component. While a request is pending, buttons are disabled, inputs are greyed out, and loading text ("Adding...") replaces the normal button label. A `finally` block always resets the loading state whether the request succeeds or fails.
+Delete todo by ID
 
----
 
-### 5. Responsive Layout Breaking on Mobile
-**Challenge:** The original CSS used a fixed `grid-template-columns: 2fr 1fr` layout and a fixed `300px` search bar width. On tablet and mobile screens, the layout overflowed and became unusable.
 
-**Solution:** Added responsive `@media` breakpoints in `App.css`:
-- **≤ 600px (mobile):** Header stacks vertically, search bar becomes full width, font sizes and paddings reduced
 
----
+Database (MongoDB)
 
-### 6. Managing Global State Without a Third-Party Library
-**Challenge:** Passing todos and dispatch functions down through multiple component layers via props made the code messy and hard to maintain.
 
-**Solution:** Used React's built-in **Context API** combined with **`useReducer`** for global state management. A custom `useTodosContext` hook wraps `useContext` and throws a descriptive error if used outside the Provider, making any misuse immediately obvious during development.
+
+
+
+
+
