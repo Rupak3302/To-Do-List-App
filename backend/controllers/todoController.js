@@ -7,7 +7,7 @@ exports.getTodos = async (req, res) => {
         const q = req.query.q;
         let query = {};
 
-        // Search by title, description or completed status (true/false)
+        // build a search query If the user actually typed something
         if (q) {
             query = {
                 $or: [
@@ -18,7 +18,7 @@ exports.getTodos = async (req, res) => {
             };
         }
 
-        // Sort by newest first
+        // newest todos show first
         const todos = await Todo.find(query).sort({ createdAt: -1 });
 
         if (todos.length === 0) 
