@@ -159,9 +159,11 @@ form input {
 }
 
 form button {
+  display : flex;
   background-color : var(--primary);
   color: #333;
   padding: 8px 20px;
+  margin-top : 10px;
   border: 0;
   font-family: "Open Sans";
   border-radius: 4px;
