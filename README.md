@@ -1,4 +1,3 @@
-
 ## Implementing To-Do List APIs with Node.js, Express.js, and MongoDB and Integrating To-Do List APIs with React Frontend (Part 1 and Part 2 Assignment)
 > Deployement Links 
 
@@ -99,9 +98,11 @@ Get All Todos
 Create Todo / Add Todo
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 224123" src="https://github.com/user-attachments/assets/7cfde717-4fe5-496d-a558-a4ff11c27e3b" />
 
-Search a todo 
-<img width="1919" height="1079" alt="Screenshot 2026-04-15 224326" src="https://github.com/user-attachments/assets/05413e4d-d213-4891-9f32-d96e42386050" />
-<img width="1919" height="1079" alt="Screenshot 2026-04-15 224413" src="https://github.com/user-attachments/assets/7be5f753-6fad-4920-8975-fe426da135df" />
+Search a todo (title / description) and (completed / pending)
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5bc79a1c-84dd-44d6-b3fe-ad816346e51e" />
+<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/034c9cea-00d2-4498-b08b-e8d9601c76c6" />
+<img width="1913" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3035a26-cf0f-4713-9e21-b8021a75cd3b" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/aaf62035-5b69-4c86-bb27-7eb95541bc70" />
 
 Get Single todo by ID
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 224633" src="https://github.com/user-attachments/assets/eb328688-c58b-44bb-b6da-394a010cdd2c" />
