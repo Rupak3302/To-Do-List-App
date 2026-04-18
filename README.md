@@ -60,7 +60,7 @@ Reason: Hardcoding the backend URL would break either local development or produ
 
 
 > Frontend
-<img width="1919" height="1079" alt="Screenshot 2026-04-15 192506" src="https://github.com/user-attachments/assets/010ff875-0556-498e-8bd8-2e7752ad0731" />
+<img width="1918" height="1071" alt="Screenshot 2026-04-19 021630" src="https://github.com/user-attachments/assets/aa50c48a-ed86-490d-9d7b-dde43af80835" />
 
 > Backend (Postman)
 
