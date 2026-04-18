@@ -30,13 +30,13 @@ This is the **React.js** frontend for a To-Do List application, fully integrated
 
 > Frontend runs at: **http://localhost:3000**
 
-## Frontend deployment (Netlify)
+## Frontend deployment (vercel)
 
-- Build command: `npm run build`
-- Publish directory: `build`
-- Base directory: `frontend`
+- Build Command: `npm run build`
+- Output Directory: `build`
+- Install Command: `npm install`
 
-> Netlify - **https://task-todoapps.netlify.app/**
+> Vercel - **https://taskmanager-todo-app.vercel.app/**
 
 ## Environment Variables
 

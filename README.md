@@ -1,17 +1,15 @@
 ## Implementing To-Do List APIs with Node.js, Express.js, and MongoDB and Integrating To-Do List APIs with React Frontend (Part 1 and Part 2 Assignment)
 > Deployement Links 
+## GitHub Links
+- https://github.com/Rupak3302/To-Do-List-App.git
 
-GitHub Links
-https://github.com/Rupak3302/To-Do-List-App.git
+## Backend Links (Render)
+- https://to-do-list-backend-ko3y.onrender.com
 
-Backend Links (Render)
-https://to-do-list-backend-ko3y.onrender.com
-
-Frontend Links(Netlify)
-https://task-todoapps.netlify.app/
+## Frontend Links(Vercel)
+- https://taskmanager-todo-app.vercel.app/
 
 > Overview of Decisions Made During the Enhancement Process
-
 ### 1. Project Structure Decision
 
 Decision: Kept the entire project — backend and frontend — in a single GitHub repository with two separate folders (`backend/` and `frontend/`), rather than splitting into two separate repos.
@@ -36,24 +34,11 @@ Decision: Used React's built-in Context API + useReducer for global state manage
 
 Reason: For an app of this scale, Context API with useReducer provides clean, predictable state management without the overhead of additional dependencies. The reducer handles four clear actions — `SET_TODOS`, `ADD_TODO`, `UPDATE_TODO`, `DELETE_TODO` — keeping state transitions easy to trace and debug.
 
-### 5. HTTP Requests Decision
-
-Decision: Replaced all native `fetch()` calls with axios for every API request across all components (`Home.js`, `TodoDetails.js`, `TodoForm.js`, `App.js`).
-
-Reason: Axios automatically handles `Content-Type: application/json` headers, JSON response parsing, and throws errors on non-2xx responses — removing repetitive boilerplate code. This also made the codebase consistent since axios was already being used in `App.js` for search.
-
-### 6. UI Dynamic Update Decision
-
-Decision: After every API call (create, update, delete), the corresponding Context reducer action is dispatched immediately using the data returned from the server response, instead of re-fetching all todos from the backend.
-
-Reason: This keeps the UI in sync with the database instantly without any extra network requests. The user sees changes reflected immediately, making the app feel fast and responsive.
-
 ### 7. Loading & Error State Decision
 
-Decision: Added `isLoading`, state variables only            and `error` state variables to **every component** that makes API calls, with `finally` blocks to always reset loading state.
+Decision: Added `isLoading`, `isUpdate` state variables and `error` state variables to **every component** that makes API calls, with `finally` blocks to always reset loading state.
 
-Reason: Without loading indicators, users had no feedback during API calls — they could click buttons multiple times causing duplicate requests. Proper error messages replace silent failures with clear user-facing feedback. The `finally` block ensures the UI never gets stuck in a loading state even if the request fails.
-
+Reason: Without loading indicators, users had no feedback during API calls — they could click buttons multiple times causing duplicate requests. The `finally` block ensures the UI never gets stuck in a loading state even if the request fails.
 
 ### 8. Responsive Design Decision
 
@@ -61,57 +46,44 @@ Decision: Added One media query breakpoints to `App.css` ( ≤600px for mobile v
 
 Reason: The original CSS had no responsive design — the layout broke completely on mobile. The assignment required a "responsive and user-friendly interface", so media queries were added to stack the grid to a single column on smaller screens and adjust font sizes, paddings, and header layout for mobile users.
 
-### 9. Search Debounce Decision
-
-Decision: Implemented a 300ms debounce on the search input in `Navbar.js` using `setTimeout`, and added a `lastestSearch` race condition guard in `App.js`.
-
-Reason: Without debouncing, an API call fired on every single keystroke — causing unnecessary load on the backend and potential UI flickering. The race condition guard discards stale responses that arrive out of order when the user types quickly.
-
 ### 10. CORS Decision
 
-Decision: Configured the backend CORS policy to use a whitelist function that allows `localhost:3000` for development and all `*.netlify.app` subdomains for production, instead of `app.use(cors())` which allows all origins.
+Decision: Configured the backend CORS policy to use a whitelist function that allows `localhost:3000` for development and all `*.ver.app` subdomains for production, instead of `app.use(cors())` which allows all origins.
 
 Reason: Allowing all origins (`cors()` with no config) is a security risk in production. The whitelist approach ensures only the known frontend origins can access the backend API, while still supporting both local development and all Netlify preview deploy URLs.
 
 ### 11. Environment Variables Decision
 
-Decision: Use `REACT_APP_API_URL` environment variable for all frontend API calls, with the value set differently per environment — `http://localhost:5000` locally and the Render URL on Netlify's dashboard.
+Decision: Use `REACT_APP_API_URL` environment variable for all frontend API calls, with the value set differently per environment — `http://localhost:5000` locally and `https://to-do-list-backend-ko3y.onrender.com` on vercel's dashboard.
 
 Reason: Hardcoding the backend URL would break either local development or production deployment. The environment variable approach means the same codebase works in both environments without any code changes — just a different `.env` value.
 
-### 12. Deployment Platform Decision
 
-Decision: Deployed the backend on Render and the frontend on Netlify
-
-Reason: Both platforms offer free tiers suitable for assignment submission. Render handles Node.js backends natively with automatic GitHub deployments. Netlify is optimized for static React apps with instant delivery.
-
-> Assignment Output ScreenShot
-
-Frontend
+> Frontend
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 192506" src="https://github.com/user-attachments/assets/010ff875-0556-498e-8bd8-2e7752ad0731" />
 
 > Backend (Postman)
 
-Get All Todos
+- Get All Todos
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 194324" src="https://github.com/user-attachments/assets/691d3ccd-e48e-4a1e-82f1-0509fe59ff70" />
 
-Create Todo / Add Todo
+- Create Todo / Add Todo
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 224123" src="https://github.com/user-attachments/assets/7cfde717-4fe5-496d-a558-a4ff11c27e3b" />
 
-Search a todo (title / description) and (completed / pending)
+- Search a todo (title / description) and (completed / pending)
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5bc79a1c-84dd-44d6-b3fe-ad816346e51e" />
 <img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/034c9cea-00d2-4498-b08b-e8d9601c76c6" />
 <img width="1913" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3035a26-cf0f-4713-9e21-b8021a75cd3b" />
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/aaf62035-5b69-4c86-bb27-7eb95541bc70" />
 
-Get Single todo by ID
+- Get Single todo by ID
 <img width="1919" height="1079" alt="Screenshot 2026-04-15 224633" src="https://github.com/user-attachments/assets/eb328688-c58b-44bb-b6da-394a010cdd2c" />
 
-Edit / Update todo by ID
+- Edit / Update todo by ID
 <img width="1919" height="1076" alt="Screenshot 2026-04-15 224956" src="https://github.com/user-attachments/assets/2e366f36-815a-497b-b922-36f5f2792174" />
 
-Delete todo by ID
+- Delete todo by ID
 <img width="1916" height="1078" alt="Screenshot 2026-04-15 225126" src="https://github.com/user-attachments/assets/78040c59-c057-42b5-85e3-7475a1ea6bea" />
 
-Database (MongoDB)
+> Database (MongoDB)
 <img width="1915" height="1078" alt="Screenshot 2026-04-15 193935" src="https://github.com/user-attachments/assets/4ce5af6a-0d68-453f-b7ee-df8c21f5cd28" />
