@@ -9,7 +9,7 @@ const todoSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        maxlength: [300, 'Description cannot exceed 300 characters']
+        maxlength: [10000, 'Description cannot exceed 10000 characters']
     },
     completed: {
         type: Boolean,

@@ -24,8 +24,8 @@ const TodoFrom = () => {
             setError('Title is too long - max 100 characters');
             return;
         }
-        if (description.lendth > 300) {
-            setError('Description is too long - max 300 characters');
+        if (description.length > 350) {
+            setError('Description is too long - max 100 characters');
             return; 
         }
 
@@ -90,9 +90,9 @@ const TodoFrom = () => {
             {/* show character count for description length existence*/}
             {description.length > 0 && (
                 <small style={{ 
-                    color: description.length > 300 ? '#ff4d4d' : '#ebb504' 
+                    color: description.length > 10000 ? '#ff4d4d' : '#ebb504' 
                 }}>
-                {description.length}/300 characters
+                {description.length}/10000 characters
                 </small>
             )}
 
